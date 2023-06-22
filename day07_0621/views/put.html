@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    <h1>회원정보 수정, 장바구니개수 수정 </h1>
+    <div class="container">
+        <label for="first_name">first_name</label>
+        <input type="text" id="first_name"  autofocus>
+        <label for="last_name">last_name</label>
+        <input type="text" id="last_name">
+        <br>
+        <button id="user_put_btn">수정</button>
+    </div>
+
+    <div class="log_put"></div>
+    <script>
+        user_put_btn.addEventListener('click', ()=>{
+            // console.log( "submit");
+            const fn_value = document.querySelector('#first_name').value;
+            const ln_value = document.querySelector('#last_name').value; 
+            const user = { 
+                first_name : fn_value,
+                last_name : ln_value 
+            }
+
+            fetch( 'http://localhost:3000/name', {
+                method : 'PUT',
+                body : JSON.stringify( user ),
+                headers : { 'Content-Type' : 'application/json'}
+            }).then( res=>res.json())
+            .then( res=> {
+                document.querySelector('.log_put').innerHTML = res.message;
+                document.querySelector('#first_name').value = '';
+                document.querySelector('#last_name').value = '';
+
+                // 고객이 데이터를 입력 후 5 후에 빈공간 
+                setTimeout(()=>{
+                    document.querySelector('.log_put').innerHTML = "";
+                }, 5000)
+            } )
+        })
+    </script>
+</body>
+</html>
+<!--
+     오전반 팀 : 프론트만 처리, 백엔드(login, register, product ) 
+     노드 풀스택( 프론트 + 백엔드 )
+-->
