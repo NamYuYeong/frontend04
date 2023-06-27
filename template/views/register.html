@@ -16,7 +16,7 @@
 
         <div>
             <label for="user_pwd">user_pwd</label>
-            <input type="text" id="user_pwd" autocomplete="off" required>
+            <input type="password" id="user_pwd" autocomplete="off" required>
         </div>
         <div>
             <button class="submit">전송</button>
@@ -40,7 +40,7 @@
             .then(res=>res.json())
             .then(res=>{
                 if(res.success==='ok'){
-                    location.href="http://localhost:3000";
+                    location.href="http://localhost:3000/login";
                 }
             })
         })

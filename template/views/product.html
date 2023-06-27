@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
@@ -9,12 +9,17 @@
 </head>
 
 <body>
-    <h1>index</h1>
+    <h1>Product/장바구니</h1>
     <div class="log">
         <span></span>
         <button class="logout">로그아웃</button>
     </div>
+    <div class="product_list">
+        <ul></ul>
+    </div>
     <script>
+        let products =[];
+
         window.addEventListener('DOMContentLoaded', () => {
             const log = document.querySelector(".log");
             //로그인이 되어 있는 상태 log
@@ -24,18 +29,43 @@
 
             if (!user) {
                 log.style.display = 'none';
-                // location.href = 'http://localhost:3000/login'
+                location.href = 'http://localhost:3000/login'
             } else {
                 log.style.display = 'block';
                 document.querySelector(".log>span").innerHTML = user;
+                //장바구니에 담긴 정보를 가져와서 화면에 표시
+                // fetch('../model/product.json')
+                fetch('/product/product.json')
+                .then(res=>res.json())
+                .then(res=>{
+                    console.log(res);
+                    products = [...res];
+                    loadProducts();
+                })
             }
 
         })
+        function loadProducts(){
+            const list = document.querySelector('.product_list ul');
+            products.map(data=>{
+                const li = document.createElement('li');
+                li.innerHTML=`
+                <input type= "checkbox" id ="checkbox" checked ="${data.checked}">
+                <span>${data.id}</span>
+                <span>${data.subject}</span>
+                <span>${data.validate}</span>
+                `
+                list.append(li)
+            })
+        }
         //logout
         document.querySelector('.logout').addEventListener('click', () => {
             document.querySelector('.log').style.display = "none";
             document.querySelector('.log>span').innerHTML = " ";
             localStorage.removeItem('user');
+            document.querySelector('.product_list ul').innerHTML="";
+
+
         })
 
     </script>
